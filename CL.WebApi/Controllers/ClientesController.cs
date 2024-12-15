@@ -1,4 +1,5 @@
 ﻿using CL.Core.Domain;
+using CL.Manager.Interface;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -10,31 +11,23 @@ namespace CL.WebApi.Controllers
     [ApiController]
     public class ClientesController : ControllerBase
     {
-        
-        [HttpGet]
-        public IActionResult Get()
+        private readonly IClienteManager clienteManager;
+
+        public ClientesController(IClienteManager clienteManager)
         {
-            return Ok(new List<Cliente>()
-            {
-                new Cliente
-                {
-                    Id = 1,
-                    Nome = "João do Caminhão",
-                    DataNascimento = new DateTime(1980, 01, 01)
-                },
-                new Cliente
-                {
-                    Id = 2,
-                    Nome = "Maria do Caminhão",
-                    DataNascimento = new DateTime(1990, 01, 01)
-                }
-            });
+            this.clienteManager = clienteManager;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            return Ok(await clienteManager.GetClientesAsync());
         }
 
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            return "value";
+            return Ok(await clienteManager.GetClienteAsync(id));
         }
 
         [HttpPost]

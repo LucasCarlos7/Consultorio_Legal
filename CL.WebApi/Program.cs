@@ -1,4 +1,7 @@
 using CL.Data.Context;
+using CL.Data.Repository;
+using CL.Manager.Implementation;
+using CL.Manager.Interface;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +15,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ClContext>();
+
+builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
+builder.Services.AddScoped<IClienteManager, ClienteManager>();
 
 var app = builder.Build();
 
